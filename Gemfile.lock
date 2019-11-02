@@ -1,0 +1,14 @@
+GEM
+  specs:
+    exiftool (1.2.1)
+      json
+    json (2.1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  exiftool
+
+BUNDLED WITH
+   2.0.2
