@@ -3,14 +3,14 @@ require 'exiftool'
 
 class EfixCheck
 
-  def run data_seed
+  def run(data_seed, folder = './')
     File.readlines(data_seed).each do |line|
-       read_file"#{line.strip}"
+      read_file "#{line.strip}", folder
     end
   end
 
   def check_metadata(data)
-    #ExifTool.command = '/usr/bin/exiftool'
+    p "Leyendo acta #{data}"
     e = Exiftool.new data
     data_hash = e.to_hash
     if data_hash[:date_time_original]
@@ -22,9 +22,10 @@ class EfixCheck
     end
   end
 
-  def read_file(data)
+  def read_file(data, folder='./')
     begin
-      if File.exist?("#{data}1.jpg")
+      path = "#{path}#{data}1.jpg"
+      if File.exist?(path)
         check_metadata "#{data}1.jpg"
       end
     rescue StandardError => e
@@ -34,4 +35,4 @@ class EfixCheck
 end
 
 exif = EfixCheck.new
-exif.run "mesas"
+exif.run ARGV[0], ARGV[1]
