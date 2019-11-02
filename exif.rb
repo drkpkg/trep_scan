@@ -3,9 +3,10 @@ require 'exiftool'
 
 class EfixCheck
 
-  def run(data_seed, folder = './')
+  def run(data_seed, folder = './', destination='./')
     File.readlines(data_seed).each do |line|
-      read_file "#{line.strip}", folder
+      result = read_file "#{line.strip}", folder
+      File.write("#{destination}report.txt", result, mode: 'a')
     end
   end
 
@@ -17,9 +18,10 @@ class EfixCheck
       date_time_original = Date.strptime(data_hash[:date_time_original], '%Y:%m:%d %H:%M:%S')
       date_time_trep = Date.strptime("2019:10:20 16:00:00", '%Y:%m:%d %H:%M:%S')
       if date_time_original < date_time_trep
-        p "#{data} ==> #{date_time_original.to_datetime}"
+        return "#{data} ==> #{date_time_original.to_datetime}\n"
       end
     end
+    "#{data} ==> OK\n"
   end
 
   def read_file(data, folder='./')
@@ -35,4 +37,4 @@ class EfixCheck
 end
 
 exif = EfixCheck.new
-exif.run ARGV[0], ARGV[1]
+exif.run ARGV[0], ARGV[1], ARGV[3]
