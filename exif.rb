@@ -6,7 +6,7 @@ class EfixCheck
   def run(data_seed, folder = './', destination='./')
     File.readlines(data_seed).each do |line|
       result = read_file "#{line.strip}", folder
-      File.write("#{destination}report.txt", result, mode: 'a')
+      File.write("#{destination}report.txt", result, mode: 'a') unless result.nil?
     end
   end
 
@@ -21,7 +21,7 @@ class EfixCheck
         return "#{data} ==> #{date_time_original.to_datetime}\n"
       end
     end
-    "#{data} ==> OK\n"
+    nil
   end
 
   def read_file(data, folder='./')
